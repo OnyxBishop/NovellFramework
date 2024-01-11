@@ -3,7 +3,6 @@ using UnityEngine.UI;
 
 public class EntryMenu : MonoBehaviour
 {
-    [SerializeField] private SceneSwitcher _sceneSwitcher;
     [SerializeField] private Button _playButton;
     [SerializeField] private Button _optionsButton;
 
@@ -21,7 +20,7 @@ public class EntryMenu : MonoBehaviour
 
     private void OnPlayClicked()
     {
-        _sceneSwitcher.SetNext();
+        
     }
 
     private void OnPauseClicked()

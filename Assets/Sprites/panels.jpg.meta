@@ -143,6 +143,132 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: panels_0
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 194
+        width: 373
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 413f363f111e3eb4f859ec4371dd2658
+      internalID: 2134649233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: panels_1
+      rect:
+        serializedVersion: 2
+        x: 507
+        y: 169
+        width: 288
+        height: 322
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5f6bac0cf9863a64aa99024605a484a7
+      internalID: 651488221
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: panels_2
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 501
+        width: 856
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4be6db0ab507dd846a40394fc1edcf64
+      internalID: -184547487
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: panels_3
+      rect:
+        serializedVersion: 2
+        x: 809
+        y: 174
+        width: 430
+        height: 159
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6b4c06410e4e7884fbe2575d6359e0aa
+      internalID: -382814649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: panels_4
+      rect:
+        serializedVersion: 2
+        x: 832
+        y: 346
+        width: 404
+        height: 142
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 954e88b498e3d034dad3fd84e8aed420
+      internalID: 848915699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: panels_5
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 27
+        width: 688
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9680f590ba585d441aadeaa12bf04454
+      internalID: 335081257
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -155,9 +281,12 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       Panel: 1774106709
+      panels_0: 2134649233
       panels_1: 651488221
       panels_2: -184547487
       panels_3: -382814649
+      panels_4: 848915699
+      panels_5: 335081257
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

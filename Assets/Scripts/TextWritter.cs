@@ -1,42 +1,49 @@
-using System.Collections.Generic;
+using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
-using System;
 
 public class TextWritter : MonoBehaviour
 {
     [SerializeField] private Text _textView;
-    [SerializeField] private List<string> _lines;
-    [SerializeField] private float _animationDuration = 12f;
 
-    private int _index = 0;
-    private Tween _animTween;
+    private WaitForSeconds _sleepTime = new(0.2f);
+    private Coroutine _typeCoroutine;
+    private string _typingLine;
 
-    public event Action LinesOut;
-
-    public void Render()
-    {
-        if (_index >= _lines.Count)
-        {
-            LinesOut?.Invoke();
-            _animTween.Kill();
-            return;
-        }
-
-        if (_animTween != null && _animTween.IsActive())
-        {
-            _animTween.Complete();
-        }
-        else
-        {
-            _animTween = _textView.DOText(_lines[_index], _animationDuration);
-            _index++;
-        }
-    }
-
-    public void Clear()
+    public void Render(string line)
     {
         _textView.text = string.Empty;
+        _typingLine = line;
+
+        _typeCoroutine = StartCoroutine(SmoothWrite(line));
+    }
+
+    public void Complete()
+    {
+        if (_typeCoroutine != null)
+        {
+            StopCoroutine(_typeCoroutine);
+            _typeCoroutine = null;
+        }
+
+        _textView.text = _typingLine;
+        _typingLine = null;
+    }
+
+    public bool IsCompleteTyped()
+    {
+        return _typeCoroutine == null;
+    }
+
+    private IEnumerator SmoothWrite(string line)
+    {
+        foreach (char abc in line)
+        {
+            _textView.text += abc;
+            yield return _sleepTime;
+        }
+
+        Complete();
     }
 }
