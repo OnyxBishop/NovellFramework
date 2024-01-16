@@ -31,7 +31,7 @@ public class TextWritter : MonoBehaviour
         _typingLine = null;
     }
 
-    public bool IsCompleteTyped()
+    public bool IsCompleteTyping()
     {
         return _typeCoroutine == null;
     }

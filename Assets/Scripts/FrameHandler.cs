@@ -16,11 +16,18 @@ public class FrameHandler : MonoBehaviour
     [SerializeField] private Image _rightCharacterFrame;
     [SerializeField] private Button _skipButton;
 
+    [Header("Кнопки выбора ответов")]
+    [SerializeField] private Actions _actions;
+
     private TextWritter _textWritter;
     private FramesSwitcher _framesSwitcher;
 
     [Header("Настройка кадров")]
     [SerializeField] private FrameInfo[] _frameInfo;
+
+    [Header("Проверка кадра - указать индекс")]
+    [SerializeField] private bool _isCheck;
+    [SerializeField] private byte _checkIndex;
 
     public event Action Ended;
 
@@ -31,6 +38,11 @@ public class FrameHandler : MonoBehaviour
 
     private void Awake()
     {
+        if (_isCheck == true)
+        {
+            _currentFrameIndex = _checkIndex;
+        }
+
         _textWritter = GetComponent<TextWritter>();
         _framesSwitcher = GetComponent<FramesSwitcher>();
 
@@ -43,8 +55,8 @@ public class FrameHandler : MonoBehaviour
         }
         else
         {
-            if (CheckWhichCharacterSpeak(out _) == true)
-                _framesSwitcher.Enable();
+            if (CheckWhichCharacterSpeak(out Character character) == true)
+                _framesSwitcher.EnableSide(character.CharactersSide);
             else
                 _framesSwitcher.Disable();
         }
@@ -62,9 +74,95 @@ public class FrameHandler : MonoBehaviour
 
     private void OnSkipClicked()
     {
+        if (_textWritter.IsCompleteTyping() == true)
+        {
+            _currentLineIndex++;
+
+            if (_currentLineIndex == _frameInfo[_currentFrameIndex].ButtonsLine)
+            {
+                _actions.Init(_frameInfo[_currentFrameIndex].ActionsInfo.FrameIndexes);
+                _actions.EnableChoosing(_frameInfo[_currentFrameIndex].ActionsInfo.Names);
+                _actions.ButtonClicked += SetFrameOnClick;
+                _skipButton.gameObject.SetActive(false);
+            }
+
+            if (_currentLineIndex < _frameInfo[_currentFrameIndex].Lines.Count)
+            {
+                _textWritter.Render(_frameInfo[_currentFrameIndex].Lines[_currentLineIndex]);
+                TryEnableCharacters();
+            }
+            else
+            {
+                if (_currentFrameIndex < _frameInfo.Length - 1)
+                {
+                    ChangeFrame();
+                }
+                else
+                {
+                    Ended?.Invoke();
+                }
+            }
+        }
+        else
+        {
+            _textWritter.Complete();
+        }
+    }
+
+    private bool CheckWhichCharacterSpeak(out Character character)
+    {
+        for (int i = 0; i < _frameInfo[_currentFrameIndex].LeftCharacterLines.Count; i++)
+        {
+            if (_currentLineIndex == _frameInfo[_currentFrameIndex].LeftCharacterLines[i])
+            {
+                character = _frameInfo[_currentFrameIndex].Characters
+                    .FirstOrDefault(person => person.CharactersSide == CharactersSide.Left);
+                return character != null;
+            }
+        }
+
+        for (int i = 0; i < _frameInfo[_currentFrameIndex].RightCharacterLines.Count; i++)
+        {
+            if (_currentLineIndex == _frameInfo[_currentFrameIndex].RightCharacterLines[i])
+            {
+                character = _frameInfo[_currentFrameIndex].Characters
+                    .FirstOrDefault(person => person.CharactersSide == CharactersSide.Right);
+                return character != null;
+            }
+        }
+
+        character = null;
+        return false;
+    }
+
+    private void ChangeFrame()
+    {
+        _currentFrameIndex++;
+        _currentLineIndex = 0;
+
+        _backImage.sprite = _frameInfo[_currentFrameIndex].BackgroundImage;
+        _textWritter.Render(_frameInfo[_currentFrameIndex].Lines[_currentLineIndex]);
+        TryEnableCharacters();
+    }
+
+    private void SetFrameOnClick(byte nextFrameIndex)
+    {
+        _actions.ButtonClicked -= SetFrameOnClick;
+        _skipButton.gameObject.SetActive(true);
+
+        _currentFrameIndex = nextFrameIndex;
+        _currentLineIndex = 0;
+
+        _backImage.sprite = _frameInfo[_currentFrameIndex].BackgroundImage;
+        _textWritter.Render(_frameInfo[_currentFrameIndex].Lines[_currentLineIndex]);
+        TryEnableCharacters();
+    }
+
+    private void TryEnableCharacters()
+    {
         if (CheckWhichCharacterSpeak(out Character character) == true)
         {
-            _framesSwitcher.Enable();
+            _framesSwitcher.EnableSide(character.CharactersSide);
 
             if (character.CharactersSide == CharactersSide.Left)
             {
@@ -93,66 +191,6 @@ public class FrameHandler : MonoBehaviour
         {
             _framesSwitcher.Disable();
         }
-
-        if (_textWritter.IsCompleteTyped() == true)
-        {
-            _currentLineIndex++;
-
-            if (_currentLineIndex < _frameInfo[_currentFrameIndex].Lines.Count)
-            {
-                _textWritter.Render(_frameInfo[_currentFrameIndex].Lines[_currentLineIndex]);
-            }
-            else
-            {
-                if (_currentFrameIndex < _frameInfo.Length - 1)
-                {
-                    ChangeFrame();
-                }
-                else
-                {
-                    Ended?.Invoke();
-                }
-            }
-        }
-        else
-        {
-            _textWritter.Complete();
-        }
-    }
-
-    private bool CheckWhichCharacterSpeak(out Character character)
-    {
-        for (int i = 0; i < _frameInfo[_currentFrameIndex]._leftCharacterLines.Count; i++)
-        {
-            if (_currentLineIndex == _frameInfo[_currentFrameIndex]._leftCharacterLines[i])
-            {
-                character = _frameInfo[_currentFrameIndex].Characters
-                    .FirstOrDefault(person => person.CharactersSide == CharactersSide.Left);
-                return character != null;
-            }
-        }
-
-        for (int i = 0; i < _frameInfo[_currentFrameIndex]._rightCharacterLines.Count; i++)
-        {
-            if (_currentLineIndex == _frameInfo[_currentFrameIndex]._rightCharacterLines[i])
-            {
-                character = _frameInfo[_currentFrameIndex].Characters
-                    .FirstOrDefault(person => person.CharactersSide == CharactersSide.Right);
-                return character != null;
-            }
-        }
-
-        character = null;
-        return false;
-    }
-
-    private void ChangeFrame()
-    {
-        _currentFrameIndex++;
-        _currentLineIndex = 0;
-
-        _backImage.sprite = _frameInfo[_currentFrameIndex].BackgroundImage;
-        _textWritter.Render(_frameInfo[_currentFrameIndex].Lines[_currentLineIndex]);
     }
 }
 
@@ -162,7 +200,18 @@ public class FrameInfo
     public Sprite BackgroundImage;
     public List<Character> Characters;
     public List<string> Lines;
-    public List<int> _leftCharacterLines;
-    public List<int> _rightCharacterLines;
+    public List<int> LeftCharacterLines;
+    public List<int> RightCharacterLines;
+    public ActionsInfo ActionsInfo;
+    public int ButtonsLine;
+}
 
+[Serializable]
+public class ActionsInfo
+{
+    public List<string> Labels;
+    public List<byte> NextFrameIndex;
+
+    public IReadOnlyList<string> Names => Labels;
+    public IReadOnlyList<byte> FrameIndexes => NextFrameIndex;
 }
