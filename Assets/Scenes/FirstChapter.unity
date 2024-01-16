@@ -338,23 +338,7 @@ MonoBehaviour:
   _skipButton: {fileID: 1115142706}
   _actions: {fileID: 1116338196}
   _frameInfo:
-  - BackgroundImage: {fileID: 21300000, guid: ca576bf7142de3945ad87a91343b232c, type: 3}
-    Characters:
-    - {fileID: 3014982021074828629, guid: 5b91091dbc02a1940a6500d04222523a, type: 3}
-    - {fileID: 5634716374913065469, guid: 7691d00cfb4176a4e8bb85220f9f8a79, type: 3}
-    Lines:
-    - Z
-    - asdfasf
-    - asfafdggr
-    - rwewr
-    LeftCharacterLines: 01000000
-    RightCharacterLines: 0200000003000000
-    ActionsInfo:
-      Labels:
-      - "\u041F\u043E\u0439\u0442\u0438 \u0432 \u0436\u043E\u043F\u0443"
-      - "\u041F\u043E\u0439\u0442\u0438 \u043D\u0430\u0445\u0443\u0439"
-      NextFrameIndex: 0203
-    ButtonsLine: 1
+  - {fileID: 11400000, guid: fc1b0852d64dd30428ac865e7b814e15, type: 2}
   _isCheck: 0
   _checkIndex: 0
 --- !u!114 &274572954
@@ -1528,7 +1512,7 @@ MonoBehaviour:
   _frameHandler: {fileID: 274572953}
   _image: {fileID: 1063503352}
   _textWritter: {fileID: 274572952}
-  _finishSprite: {fileID: 335081257, guid: 4bc6dd8b17c2b964dad3cc1bd8e0231f, type: 3}
+  _finishSprite: {fileID: 21300000, guid: 74749122c5b25594e9a04e937fa11dc6, type: 3}
   _finishText: End
 --- !u!4 &1789527562
 Transform:

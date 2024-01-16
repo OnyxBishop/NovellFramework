@@ -194,8 +194,8 @@ public class FrameHandler : MonoBehaviour
     }
 }
 
-[Serializable]
-public class FrameInfo
+[CreateAssetMenu(fileName = "Frame", menuName = "CreateFrameDTO",order = 51)]
+public class FrameInfo : ScriptableObject
 {
     public Sprite BackgroundImage;
     public List<Character> Characters;
