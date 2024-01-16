@@ -4,15 +4,20 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(TextWritter))]
+[RequireComponent(typeof(FramesSwitcher))]
 public class FrameHandler : MonoBehaviour
 {
     [Header("Ссылки на компоненты/объекты")]
-    [SerializeField] private TextWritter _textWritter;
-    [SerializeField] private Text _characterNameField;
     [SerializeField] private Image _backImage;
+    [SerializeField] private Text _leftNameField;
+    [SerializeField] private Text _rightNameField;
     [SerializeField] private Image _leftCharacterFrame;
     [SerializeField] private Image _rightCharacterFrame;
     [SerializeField] private Button _skipButton;
+
+    private TextWritter _textWritter;
+    private FramesSwitcher _framesSwitcher;
 
     [Header("Настройка кадров")]
     [SerializeField] private FrameInfo[] _frameInfo;
@@ -26,8 +31,23 @@ public class FrameHandler : MonoBehaviour
 
     private void Awake()
     {
+        _textWritter = GetComponent<TextWritter>();
+        _framesSwitcher = GetComponent<FramesSwitcher>();
+
         _backImage.sprite = _frameInfo[_currentFrameIndex].BackgroundImage;
         _textWritter.Render(_frameInfo[_currentFrameIndex].Lines[_currentLineIndex]);
+
+        if (_frameInfo[_currentFrameIndex].Characters == null)
+        {
+            _framesSwitcher.Disable();
+        }
+        else
+        {
+            if (CheckWhichCharacterSpeak(out _) == true)
+                _framesSwitcher.Enable();
+            else
+                _framesSwitcher.Disable();
+        }
     }
 
     private void OnEnable()
@@ -42,13 +62,17 @@ public class FrameHandler : MonoBehaviour
 
     private void OnSkipClicked()
     {
-        if (CheckWhichCharacterSpreak(out Character character) == true)
+        if (CheckWhichCharacterSpeak(out Character character) == true)
         {
+            _framesSwitcher.Enable();
+
             if (character.CharactersSide == CharactersSide.Left)
             {
                 _leftCharacter = character;
+                _leftCharacter.Init(_leftCharacterFrame);
+
                 _leftCharacterFrame.sprite = _leftCharacter.Image;
-                _characterNameField.text = _leftCharacter.Name;
+                _leftNameField.text = _leftCharacter.Name;
 
                 _leftCharacter.Speak();
                 _rightCharacter?.Mute();
@@ -56,12 +80,18 @@ public class FrameHandler : MonoBehaviour
             else
             {
                 _rightCharacter = character;
-                _leftCharacterFrame.sprite = _leftCharacter.Image;
-                _characterNameField.text = _leftCharacter.Name;
+                _rightCharacter.Init(_rightCharacterFrame);
+
+                _rightCharacterFrame.sprite = _rightCharacter.Image;
+                _rightNameField.text = _rightCharacter.Name;
 
                 _rightCharacter.Speak();
                 _leftCharacter?.Mute();
             }
+        }
+        else
+        {
+            _framesSwitcher.Disable();
         }
 
         if (_textWritter.IsCompleteTyped() == true)
@@ -90,7 +120,7 @@ public class FrameHandler : MonoBehaviour
         }
     }
 
-    private bool CheckWhichCharacterSpreak(out Character character)
+    private bool CheckWhichCharacterSpeak(out Character character)
     {
         for (int i = 0; i < _frameInfo[_currentFrameIndex]._leftCharacterLines.Count; i++)
         {
