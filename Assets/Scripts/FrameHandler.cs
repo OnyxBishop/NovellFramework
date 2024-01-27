@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 [RequireComponent(typeof(TextWritter))]
 [RequireComponent(typeof(FramesSwitcher))]
@@ -10,8 +11,8 @@ public class FrameHandler : MonoBehaviour
 {
     [Header("—сылки на компоненты/объекты")]
     [SerializeField] private Image _backImage;
-    [SerializeField] private Text _leftNameField;
-    [SerializeField] private Text _rightNameField;
+    [SerializeField] private TMP_Text _leftNameField;
+    [SerializeField] private TMP_Text _rightNameField;
     [SerializeField] private Image _leftCharacterFrame;
     [SerializeField] private Image _rightCharacterFrame;
     [SerializeField] private Button _skipButton;
@@ -48,6 +49,7 @@ public class FrameHandler : MonoBehaviour
 
         _backImage.sprite = _frameInfo[_currentFrameIndex].BackgroundImage;
         _textWritter.Render(_frameInfo[_currentFrameIndex].Lines[_currentLineIndex]);
+        TryEnableCharacters();
 
         if (_frameInfo[_currentFrameIndex].Characters == null)
         {
@@ -192,18 +194,6 @@ public class FrameHandler : MonoBehaviour
             _framesSwitcher.Disable();
         }
     }
-}
-
-[CreateAssetMenu(fileName = "Frame", menuName = "CreateFrameDTO",order = 51)]
-public class FrameInfo : ScriptableObject
-{
-    public Sprite BackgroundImage;
-    public List<Character> Characters;
-    public List<string> Lines;
-    public List<int> LeftCharacterLines;
-    public List<int> RightCharacterLines;
-    public ActionsInfo ActionsInfo;
-    public int ButtonsLine;
 }
 
 [Serializable]

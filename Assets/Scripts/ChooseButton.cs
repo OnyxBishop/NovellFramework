@@ -1,10 +1,11 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ChooseButton : MonoBehaviour
 {
-    [SerializeField] private Text _textField;
+    [SerializeField] private TMP_Text _textField;
 
     private byte _nextFrameIndex;
 
